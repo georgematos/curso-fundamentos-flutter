@@ -1,10 +1,10 @@
-# todo
+# ToDo
 
-A new Flutter project.
+A mini Flutter project for training the it's fundamentals.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project follow the exemple of course of Balta.io from Youtube.
 
 A few resources to get you started if this is your first Flutter project:
 
