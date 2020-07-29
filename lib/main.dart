@@ -25,9 +25,9 @@ class MyHomePage extends StatefulWidget {
 
   MyHomePage() {
     // items = [];
-    items.add(Item(title: "Item1", done: false));
-    items.add(Item(title: "Item2", done: true));
-    items.add(Item(title: "Item3", done: false));
+    items.add(Item(title: "Comprar frutas", done: false));
+    items.add(Item(title: "Cortar o cabelo", done: true));
+    items.add(Item(title: "Lavar o carro", done: false));
   }
 
   @override
@@ -35,16 +35,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var newTaskCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Todo List"),
+        title: TextFormField(
+          controller: newTaskCtrl,
+          keyboardType: TextInputType.text,
+          style: TextStyle(color: Colors.white, fontSize: 20),
+          decoration: InputDecoration(
+              labelText: "New task",
+              labelStyle: TextStyle(color: Colors.white)),
+        ),
       ),
       body: ListView.builder(
         itemCount: widget.items.length,
         itemBuilder: (context, index) {
-          return Text(widget.items[index].title);
+          final item = widget.items[index];
+          return CheckboxListTile(
+            title: Text(item.title),
+            key: Key(item.title),
+            value: item.done,
+            onChanged: (value) {
+              setState(() => item.done = value);
+            },
+          );
         },
       ),
     );
