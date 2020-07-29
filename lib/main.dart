@@ -26,13 +26,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   var items = new List<Item>();
 
-  MyHomePage() {
-    // items = [];
-    // items.add(Item(title: "Comprar frutas", done: false));
-    // items.add(Item(title: "Cortar o cabelo", done: true));
-    // items.add(Item(title: "Lavar o carro", done: false));
-  }
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -44,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
     loadData();
   }
 
-  Future<dynamic> loadData() async {
+  Future loadData() async {
     var shPrefs = await SharedPreferences.getInstance();
     var data = shPrefs.getString('data');
     if (data != null) {
@@ -54,6 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
         widget.items = result;
       });
     }
+  }
+
+  save() async {
+    var shPrefs = await SharedPreferences.getInstance();
+    await shPrefs.setString('data', jsonEncode(widget.items));
   }
 
   void add() {
@@ -78,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     setState(() {
       widget.items.add(Item(title: newTaskCtrl.text, done: false));
+      save();
       newTaskCtrl.clear();
     });
   }
@@ -86,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (widget.items.isEmpty) return;
     setState(() {
       widget.items.removeAt(index);
+      save();
     });
     widget.items.forEach((item) => print(item.title));
   }
@@ -120,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
               value: item.done,
               onChanged: (value) {
                 setState(() => item.done = value);
+                save();
               },
             ),
           );
